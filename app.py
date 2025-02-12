@@ -28,6 +28,10 @@ channel = ClarifaiChannel.get_grpc_channel()
 stub = service_pb2_grpc.V2Stub(channel)
 metadata = (("authorization", f"Key {CLARIFAI_API_KEY}"),)
 
+@app.route('/')
+def index():
+    return render_template('restaurant_list.html')
+
 @app.route('/restaurants', methods=['GET'])
 def get_restaurants():
     page = request.args.get('page', 1, type=int)

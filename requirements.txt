@@ -4,3 +4,4 @@ clarifai-grpc==11.1.1
 pymongo==4.11.1
 grpcio==1.65.5
 requests==2.32.3
+gunicorn==20.1.0

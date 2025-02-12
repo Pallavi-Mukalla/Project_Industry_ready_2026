@@ -198,66 +198,26 @@
     </div>
 
     <script>
-        let currentPage = 1;
-        const perPage = 10;
-    
-        function loadPage(page) {
-            if (page < 1) return;
-    
-            fetch(`http://localhost:5000/restaurants?page=${page}&size=${perPage}`)
-                .then(response => response.json())
-                .then(data => {
-                    const restaurants = data.restaurants;
-                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => ` 
-                        <div class="restaurant-item">
-                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
-                            <div class="restaurant-details">
-                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
-                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
-                            </div>
-                        </div>
-                    `).join('');
-                    document.getElementById('page-info').textContent = `Page ${data.page} of ${Math.ceil(data.total_restaurants / data.size)}`;
-                    currentPage = data.page;
-                    document.getElementById('prev-btn').disabled = currentPage <= 1;
-                    document.getElementById('next-btn').disabled = currentPage * data.size >= data.total_restaurants;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    document.getElementById('restaurant-list').innerHTML = `<p>Error loading restaurant data: ${error.message}</p>`;
-                });
-        }
+    let currentPage = 1;
+    const perPage = 10;
+    const apiUrl = 'https://project-industry-ready-2026.onrender.com'
 
-        function searchByLocation() {
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lng = parseFloat(document.getElementById('longitude').value);
-            const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
+    function loadPage(page) {
+        if (page < 1) return;
 
-            if (!lat || !lng) {
-                alert('Please enter valid latitude and longitude.');
-                return;
-            }
-
-            fetch(`http://localhost:5000/restaurants/nearby?lat=${lat}&lng=${lng}&radius=${radius}&page=${currentPage}&size=${perPage}`)
+        fetch(`${apiUrl}/restaurants?page=${page}&size=${perPage}`)
             .then(response => response.json())
             .then(data => {
-                if (data.restaurants && Array.isArray(data.restaurants)) {
-                    const restaurants = data.restaurants;
-                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => ` 
-                        <div class="restaurant-item">
-                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
-                            <div class="restaurant-details">
-                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
-                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
-                                <p><strong>Distance:</strong> ${r.distance_km} km</p>
-                            </div>
+                const restaurants = data.restaurants;
+                document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
+                    <div class="restaurant-item">
+                        <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                        <div class="restaurant-details">
+                            <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                            <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
                         </div>
-                    `).join('');
-                } else {
-                    console.error("No restaurants found or invalid data:", data);
-                    document.getElementById('restaurant-list').innerHTML = `<p>No nearby restaurants found.</p>`;
-                }
-        
+                    </div>
+                `).join('');
                 document.getElementById('page-info').textContent = `Page ${data.page} of ${Math.ceil(data.total_restaurants / data.size)}`;
                 currentPage = data.page;
                 document.getElementById('prev-btn').disabled = currentPage <= 1;
@@ -265,73 +225,113 @@
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                document.getElementById('restaurant-list').innerHTML = `<p>Error loading nearby restaurant data: ${error.message}</p>`;
+                document.getElementById('restaurant-list').innerHTML = `<p>Error loading restaurant data: ${error.message}</p>`;
             });
+    }
+
+    function searchByLocation() {
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+        const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
+
+        if (!lat || !lng) {
+            alert('Please enter valid latitude and longitude.');
+            return;
         }
 
-        function searchByImage() {
-            const imageInput = document.getElementById('image-input');
-            const latitude = parseFloat(document.getElementById('latitude').value);
-            const longitude = parseFloat(document.getElementById('longitude').value);
-            const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
-        
-            if (!latitude || !longitude || !imageInput.files[0]) {
-                alert('Please provide both location and image.');
-                return;
-            }
-        
-            const formData = new FormData();
-            formData.append('image', imageInput.files[0]);
-            formData.append('latitude', latitude);
-            formData.append('longitude', longitude);
-            formData.append('radius', radius);
-        
-            fetch('http://localhost:5000/restaurants/search', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+        fetch(`${apiUrl}/restaurants/nearby?lat=${lat}&lng=${lng}&radius=${radius}&page=${currentPage}&size=${perPage}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.restaurants && Array.isArray(data.restaurants)) {
                 const restaurants = data.restaurants;
-                if (restaurants && Array.isArray(restaurants)) {
-                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
-                        <div class="restaurant-item">
-                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
-                            <div class="restaurant-details">
-                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
-                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
-                                <p><strong>Distance:</strong> ${r.distance_km} km</p>
-                            </div>
+                document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
+                    <div class="restaurant-item">
+                        <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                        <div class="restaurant-details">
+                            <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                            <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
+                            <p><strong>Distance:</strong> ${r.distance_km} km</p>
                         </div>
-                    `).join('');
-                } else {
-                    document.getElementById('restaurant-list').innerHTML = `<p>No results found for your search.</p>`;
-                }
-            })
-            .catch(error => {
-                console.error('Error performing search:', error);
-                document.getElementById('restaurant-list').innerHTML = `<p>Error performing search: ${error.message}</p>`;
-            });
-        }
-        
-
-
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lng;
-                });
+                    </div>
+                `).join('');
             } else {
-                alert("Geolocation is not supported by this browser.");
+                console.error("No restaurants found or invalid data:", data);
+                document.getElementById('restaurant-list').innerHTML = `<p>No nearby restaurants found.</p>`;
             }
+
+            document.getElementById('page-info').textContent = `Page ${data.page} of ${Math.ceil(data.total_restaurants / data.size)}`;
+            currentPage = data.page;
+            document.getElementById('prev-btn').disabled = currentPage <= 1;
+            document.getElementById('next-btn').disabled = currentPage * data.size >= data.total_restaurants;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById('restaurant-list').innerHTML = `<p>Error loading nearby restaurant data: ${error.message}</p>`;
+        });
+    }
+
+    function searchByImage() {
+        const imageInput = document.getElementById('image-input');
+        const latitude = parseFloat(document.getElementById('latitude').value);
+        const longitude = parseFloat(document.getElementById('longitude').value);
+        const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
+
+        if (!latitude || !longitude || !imageInput.files[0]) {
+            alert('Please provide both location and image.');
+            return;
         }
 
-        // Initial Page Load
-        loadPage(currentPage);
-    </script>
+        const formData = new FormData();
+        formData.append('image', imageInput.files[0]);
+        formData.append('latitude', latitude);
+        formData.append('longitude', longitude);
+        formData.append('radius', radius);
+
+        fetch(`${apiUrl}/restaurants/search`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const restaurants = data.restaurants;
+            if (restaurants && Array.isArray(restaurants)) {
+                document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
+                    <div class="restaurant-item">
+                        <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                        <div class="restaurant-details">
+                            <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                            <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
+                            <p><strong>Distance:</strong> ${r.distance_km} km</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('restaurant-list').innerHTML = `<p>No results found for your search.</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error performing search:', error);
+            document.getElementById('restaurant-list').innerHTML = `<p>Error performing search: ${error.message}</p>`;
+        });
+    }
+
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    // Initial Page Load
+    loadPage(currentPage);
+</script>
+
 </body>
 </html>

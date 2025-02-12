@@ -1,0 +1,141 @@
+{
+    "indian": [
+        "biryani", "butter chicken", "paneer tikka", "dal makhani", "samosa",
+        "chole bhature", "pani puri", "dosa", "idli", "vada", "gulab jamun", 
+        "jalebi", "pav bhaji", "chicken tikka", "tandoori chicken", "mutton rogan josh", 
+        "chicken curry", "aloo paratha", "pakora", "raita", "kebabs", "rice", "sambar"
+    ],
+    "fastfood": [
+        "burger", "pizza", "fries", "hot dog", "french fries", "tacos", "nachos", 
+        "sandwich", "fried chicken", "chicken nuggets", "cheese fries", "onion rings", 
+        "wraps", "chicken wings", "quesadilla", "french toast", "grilled cheese"
+    ],
+    "icecream": [
+        "vanilla ice cream", "chocolate ice cream", "strawberry ice cream", "mango sorbet", 
+        "cookie dough ice cream", "mint chocolate chip", "pistachio ice cream", 
+        "rocky road", "butter pecan", "coffee ice cream", "neapolitan ice cream", 
+        "caramel ice cream", "fruit sorbet", "matcha ice cream", "greek yogurt ice cream"
+    ],
+    "others": [
+        "sushi", "ramen", "tempura", "tacos", "paella", "falafel", "gyros", "shawarma", 
+        "kimchi", "dim sum", "spring rolls", "kebabs", "hummus", "lasagna", "pasta", 
+        "risotto", "couscous", "quiche", "moussaka", "crab cakes", "shrimp cocktail"
+    ],
+    "american": [
+        "apple pie", "hot dog", "hamburger", "corn dog", "grilled cheese", "cheeseburger", 
+        "ribs", "buffalo wings", "mac and cheese", "potato salad", "coleslaw", "clam chowder"
+    ],
+    "italian": [
+        "pizza", "pasta", "lasagna", "risotto", "gelato", "frittata", "bruschetta", 
+        "arancini", "tiramisu", "cannoli", "gnocchi", "carbonara", "bolognese", "caprese salad"
+    ],
+    "chinese": [
+        "fried rice", "dumplings", "spring rolls", "sweet and sour chicken", "kung pao chicken", 
+        "chow mein", "lo mein", "egg foo young", "wonton soup", "mapo tofu", "fried wonton", 
+        "general tso chicken", "mongolian beef", "sesame chicken"
+    ],
+    "mexican": [
+        "tacos", "burritos", "enchiladas", "quesadilla", "guacamole", "salsa", "nachos", 
+        "churros", "tamales", "tostadas", "fajitas", "chili con carne", "empanadas"
+    ],
+    "french": [
+        "croissant", "baguette", "quiche", "ratatouille", "crepes", "escargot", "coq au vin", 
+        "beef bourguignon", "cassoulet", "foie gras", "moules marinières", "potatoes dauphinoise"
+    ],
+    "japanese": [
+        "sushi", "sashimi", "ramen", "tempura", "bento", "teriyaki", "yakitori", 
+        "tonkatsu", "unagi", "okonomiyaki", "takoyaki", "shabu-shabu", "miso soup"
+    ],
+    "thai": [
+        "pad thai", "green curry", "tom yum", "som tam", "massaman curry", "mango sticky rice", 
+        "tom kha", "satay", "thai basil chicken", "thai iced tea", "drunken noodles", "larb"
+    ],
+    "middle eastern": [
+        "falafel", "hummus", "shawarma", "kebabs", "tabbouleh", "baklava", "fattoush", 
+        "dolma", "manakish", "knafeh", "mutabbal", "labneh", "kebabs"
+    ],
+    "afghani": [
+        "qabili pilaf", "mantu", "ashak", "kebabs", "bolani", "sabzi", "korma", "kebab", 
+        "shami kebab", "chicken karahi"
+    ],
+    "african": [
+        "jollof rice", "suya", "egusi soup", "bunny chow", "nyama choma", "stewed beans", 
+        "plantains", "fufu", "pounded yam", "biltong"
+    ],
+    "andhra": [
+        "pulihora", "gongura pickle", "andhra kodi curry", "andhra biryani", "pesarattu", 
+        "fryams", "mamsam curry", "charu", "talimpu"
+    ],
+    "argentine": [
+        "asado", "empanadas", "choripan", "milanesa", "provoleta", "chimichurri", "mate", 
+        "dulce de leche", "alfajores"
+    ],
+    "armenian": [
+        "khorovats", "dolma", "kebabs", "harissa", "lahmajoun", "baklava", "khorovats", 
+        "manti", "khash"
+    ],
+    "brazilian": [
+        "feijoada", "churrasco", "pao de queijo", "moqueca", "coxinha", "brigadeiro", 
+        "acai bowl", "pastel", "tapioca"
+    ],
+    "belgian": [
+        "waffles", "moules frites", "stoofvlees", "flemish stew", "waterzooi", "speculoos", 
+        "fries", "chocolate"
+    ],
+    "bengali": [
+        "macher jhol", "mishti doi", "shorshe ilish", "rosogolla", "sandesh", "kachaudi", 
+        "cholar dal", "panta bhat", "bengali sweets"
+    ],
+    "cajun": [
+        "gumbo", "jambalaya", "po' boy", "etouffee", "crawfish", "boudin", "beignets", 
+        "king cake", "red beans and rice"
+    ],
+    "canadian": [
+        "poutine", "butter tarts", "beavertails", "caesars", "cedar plank salmon", 
+        "tourtière", "ketchup chips", "Nanaimo bars"
+    ],
+    "caribbean": [
+        "jerk chicken", "curry goat", "roti", "callaloo", "ackee and saltfish", "rice and peas", 
+        "doubles", "fritters", "pepper pot soup"
+    ],
+    "charcoal grill": [
+        "grilled steaks", "charcoal chicken", "grilled fish", "shashlik", "grilled vegetables", 
+        "grilled lamb chops", "grilled shrimp"
+    ],
+    "chettinad": [
+        "chettinad chicken curry", "chettinad fish curry", "idiyappam", "kuzhambu", "parotta", 
+        "spicy chicken fry", "chettinad biryani", "keema dosa", "curry leaves chutney"
+    ],
+    "cuban": [
+        "cubano sandwich", "ropa vieja", "tostones", "lechon asado", "arroz con pollo", 
+        "mojito", "flan", "empanadas"
+    ],
+    "fusion": [
+        "sushi burrito", "ramen burger", "sushi pizza", "kimchi tacos", "bao buns", 
+        "poke bowls", "kimchi fries"
+    ],
+    "german": [
+        "sauerkraut", "bratwurst", "pretzels", "sauerbraten", "wiener schnitzel", 
+        "currywurst", "apfelstrudel", "potato salad"
+    ],
+    "greek": [
+        "moussaka", "souvlaki", "baklava", "hummus", "tzatziki", "spanakopita", "dolma", 
+        "gyro", "feta cheese", "loukoumades"
+    ],
+    "grill": [
+        "grilled chicken", "grilled salmon", "grilled ribs", "grilled vegetables", "grilled steak", 
+        "grilled corn", "grilled shrimp", "grilled lobster"
+    ],
+    "italian": [
+        "pizza", "pasta", "lasagna", "risotto", "gelato", "frittata", "bruschetta", 
+        "arancini", "tiramisu", "cannoli", "gnocchi", "carbonara", "bolognese", "caprese salad"
+    ],
+    "kashmiri": [
+        "rogan josh", "yakhni", "gustaba", "seekh kebab", "dum aloo", "tabak maaz", "kashmiri pulao", 
+        "noon chai", "shufta"
+    ],
+    "kebab": [
+        "shami kebab", "seekh kebab", "reshmi kebab", "chicken kebab", "mutton kebab", 
+        "doner kebab", "adana kebab", "kebab wraps", "kebabs with naan"
+    ]
+}

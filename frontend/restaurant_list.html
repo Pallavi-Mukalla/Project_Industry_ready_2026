@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant List</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FAF3E3; /* Soft Cream Background */
+            color: #5C4033; /* Dark Wood */
+        }
+
+        /* Page Container */
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background: #F4EDE3; /* Light Cream */
+            border-radius: 10px;
+            box-shadow: 6px 6px 15px rgba(92, 64, 51, 0.2);
+        }
+
+        /* Restaurant List */
+        #restaurant-list {
+            margin-bottom: 20px;
+        }
+
+        /* Restaurant Card */
+        .restaurant-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 12px;
+            background: #EADBC8; /* Warm Neutral */
+            box-shadow: 4px 4px 12px rgba(92, 64, 51, 0.15);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Hover Effect */
+        .restaurant-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 15px rgba(92, 64, 51, 0.25);
+        }
+
+        /* Restaurant Image */
+        .restaurant-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 3px solid #D68C45; /* Terracotta */
+            margin-right: 20px;
+            box-shadow: 2px 2px 8px rgba(92, 64, 51, 0.2);
+        }
+
+        /* Text Details */
+        .restaurant-details {
+            flex: 1;
+        }
+
+        /* Restaurant Name */
+        .restaurant-details h3 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Restaurant Name Link */
+        .restaurant-details h3 a {
+            text-decoration: none;
+            color: #8B3E2F; /* Deep Terracotta */
+            transition: color 0.3s ease;
+        }
+
+        .restaurant-details h3 a:hover {
+            color: #C06C50; /* Softer Terracotta */
+        }
+
+        /* Cuisine Text */
+        .restaurant-details p {
+            font-size: 16px;
+            color: #5C4033; /* Dark Wood */
+            margin: 5px 0;
+        }
+
+        /* Pagination Controls */
+        #pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Pagination Buttons */
+        #pagination-controls button {
+            background: #D68C45; /* Terracotta */
+            color: #FAF3E3; /* Cream */
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #pagination-controls button:hover {
+            background: #8B3E2F; /* Deep Terracotta */
+        }
+
+        /* Page Info */
+        #page-info {
+            font-size: 16px;
+            font-weight: bold;
+            color: #5C4033; /* Dark Wood */
+        }
+
+        /* Search Form */
+        #search-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #EADBC8;
+            border-radius: 10px;
+            box-shadow: 4px 4px 12px rgba(92, 64, 51, 0.15);
+        }
+
+        #search-form input,
+        #search-form button {
+            margin-right: 10px;
+        }
+
+        #search-form input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #D68C45;
+        }
+
+        #search-form button {
+            background: #D68C45;
+            color: #FAF3E3;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #search-form button:hover {
+            background: #8B3E2F;
+        }
+
+        /* Image Upload Button */
+        #image-upload-btn {
+            background: #A07D4C;
+            color: #FAF3E3;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #image-upload-btn:hover {
+            background: #8B3E2F;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Search Form -->
+        <div id="search-form">
+            <input type="number" id="latitude" placeholder="Latitude" step="any">
+            <input type="number" id="longitude" placeholder="Longitude" step="any">
+            <input type="number" id="radius" placeholder="Radius (km)" step="any">
+            <button onclick="searchByLocation()">Search</button>
+            <button id="current-location-btn" onclick="getCurrentLocation()">Use Current Location</button>
+
+            <!-- Image Upload Section -->
+            <input type="file" id="image-input" accept="image/*" />
+            <button id="image-upload-btn" onclick="searchByImage()">Search by Image</button>
+        </div>
+
+        <div id="restaurant-list"></div>
+
+        <!-- Pagination controls -->
+        <div id="pagination-controls">
+            <button id="prev-btn" onclick="loadPage(currentPage - 1)">Previous</button>
+            <span id="page-info"></span>
+            <button id="next-btn" onclick="loadPage(currentPage + 1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const perPage = 10;
+    
+        function loadPage(page) {
+            if (page < 1) return;
+    
+            fetch(`http://localhost:5000/restaurants?page=${page}&size=${perPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    const restaurants = data.restaurants;
+                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => ` 
+                        <div class="restaurant-item">
+                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                            <div class="restaurant-details">
+                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('page-info').textContent = `Page ${data.page} of ${Math.ceil(data.total_restaurants / data.size)}`;
+                    currentPage = data.page;
+                    document.getElementById('prev-btn').disabled = currentPage <= 1;
+                    document.getElementById('next-btn').disabled = currentPage * data.size >= data.total_restaurants;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('restaurant-list').innerHTML = `<p>Error loading restaurant data: ${error.message}</p>`;
+                });
+        }
+
+        function searchByLocation() {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lng = parseFloat(document.getElementById('longitude').value);
+            const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
+
+            if (!lat || !lng) {
+                alert('Please enter valid latitude and longitude.');
+                return;
+            }
+
+            fetch(`http://localhost:5000/restaurants/nearby?lat=${lat}&lng=${lng}&radius=${radius}&page=${currentPage}&size=${perPage}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.restaurants && Array.isArray(data.restaurants)) {
+                    const restaurants = data.restaurants;
+                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => ` 
+                        <div class="restaurant-item">
+                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                            <div class="restaurant-details">
+                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
+                                <p><strong>Distance:</strong> ${r.distance_km} km</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    console.error("No restaurants found or invalid data:", data);
+                    document.getElementById('restaurant-list').innerHTML = `<p>No nearby restaurants found.</p>`;
+                }
+        
+                document.getElementById('page-info').textContent = `Page ${data.page} of ${Math.ceil(data.total_restaurants / data.size)}`;
+                currentPage = data.page;
+                document.getElementById('prev-btn').disabled = currentPage <= 1;
+                document.getElementById('next-btn').disabled = currentPage * data.size >= data.total_restaurants;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('restaurant-list').innerHTML = `<p>Error loading nearby restaurant data: ${error.message}</p>`;
+            });
+        }
+
+        function searchByImage() {
+            const imageInput = document.getElementById('image-input');
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+            const radius = parseFloat(document.getElementById('radius').value) || 5;  // Default radius 5 km
+        
+            if (!latitude || !longitude || !imageInput.files[0]) {
+                alert('Please provide both location and image.');
+                return;
+            }
+        
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+            formData.append('latitude', latitude);
+            formData.append('longitude', longitude);
+            formData.append('radius', radius);
+        
+            fetch('http://localhost:5000/restaurants/search', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const restaurants = data.restaurants;
+                if (restaurants && Array.isArray(restaurants)) {
+                    document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
+                        <div class="restaurant-item">
+                            <img src="${r.image}" alt="${r.restaurant.name}" class="restaurant-img">
+                            <div class="restaurant-details">
+                                <h3><a href="${r.restaurant.url}" target="_blank">${r.restaurant.name}</a></h3>
+                                <p><strong>Cuisines:</strong> ${r.restaurant.cuisines}</p>
+                                <p><strong>Distance:</strong> ${r.distance_km} km</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('restaurant-list').innerHTML = `<p>No results found for your search.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error performing search:', error);
+                document.getElementById('restaurant-list').innerHTML = `<p>Error performing search: ${error.message}</p>`;
+            });
+        }
+        
+
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Initial Page Load
+        loadPage(currentPage);
+    </script>
+</body>
+</html>
